@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitTrack - 운동 관리</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>FitTrack</h1>
+        <p>나의 운동 기록과 목표를 관리하세요!</p>
+    </header>
+
+    <main>
+        <section class="summary">
+            <h2>운동 기록</h2>
+            <p>현재 등록된 운동: <strong><%= exercises.length %></strong>개</p>
+        </section>
+
+        <section class="form-section">
+            <h2>새 운동 기록 추가</h2>
+            <form action="/exercises/add" method="POST">
+                <input type="text" name="exercise_name" placeholder="운동 이름" required>
+                <input type="number" name="duration" placeholder="운동 시간(분)" min="1" required>
+                <input type="date" name="exercise_date" required>
+                <textarea name="memo" placeholder="운동 메모"></textarea>
+                <button type="submit">운동 기록 저장</button>
+            </form>
+        </section>
+<section class="goal-section">
+    <h2>주간 운동 목표</h2>
+
+    <form action="/goals/add" method="POST">
+        <label>일주일 운동 목표 (회)</label>
+        <input type="number" name="weekly_target"
+               placeholder="예: 5" min="1" required>
+
+        <button type="submit">목표 설정</button>
+    </form>
+    <% if (goal) { %>
+        <p>
+            현재 설정된 주간 운동 목표:
+            <strong><%= goal.weekly_target %>회</strong>
+        </p>
+    <p>
+    이번 주 운동 횟수:
+    <strong><%= weeklyCount %>회</strong>
+</p>
+
+<p>
+    목표 달성률:
+    <strong><%= Math.min(100, Math.round((weeklyCount / goal.weekly_target) * 100)) %>%</strong>
+</p>
+<% if (weeklyCount >= goal.weekly_target) { %>
+    <div class="achievement-message">
+        🎉 축하합니다! 이번 주 운동 목표를 달성했습니다!
+    </div>
+<% } %>
+    <% } else { %>
+        <p>아직 설정된 운동 목표가 없습니다.</p>
+    <% } %>
+</section>
+
+<section class="calendar-section">
+    <h2>운동 달력</h2>
+
+    <div class="calendar-header">
+        <button type="button" id="prevMonth">이전 달</button>
+        <h3 id="calendarTitle"></h3>
+        <button type="button" id="nextMonth">다음 달</button>
+    </div>
+
+    <div id="calendar" class="calendar"></div>
+</section>
+<section class="statistics">
+    <h2>운동 통계</h2>
+
+    <h3>이번 주 운동 횟수</h3>
+    <p><strong><%= weeklyCount %>회</strong></p>
+
+    <h3>이번 달 운동 횟수</h3>
+    <p><strong><%= monthlyCount %>회</strong></p>
+
+    <h3>운동 종류별 통계</h3>
+    <% typeStats.forEach(stat => { %>
+        <p><%= stat.exercise_name %> : <%= stat.total %>회</p>
+    <% }) %>
+<div class="chart">
+    <% typeStats.forEach(stat => { %>
+        <div class="chart-item">
+            <span><%= stat.exercise_name %></span>
+            <div class="chart-bar">
+                <div class="chart-fill"
+                     style="width: <%= (stat.total / Math.max(...typeStats.map(item => item.total))) * 100 %>%;">
+                </div>
+            </div>
+            <strong><%= stat.total %>회</strong>
+        </div>
+    <% }) %>
+</div>
+</section>
+
+<section class="achievements">
+    <h2>목표 달성 이력</h2>
+
+    <% if (achievements.length > 0) { %>
+        <% achievements.forEach(achievement => { %>
+            <div class="record">
+                <h3>주간 운동 목표 달성!</h3>
+                <p>달성 날짜:
+                    <%= new Date(achievement.achievement_date).toLocaleDateString("ko-KR") %>
+                </p>
+            </div>
+        <% }) %>
+    <% } else { %>
+        <p>아직 목표 달성 이력이 없습니다.</p>
+    <% } %>
+</section>
+
+<section class="records">
+    <h2>최근 운동 기록</h2>
+
+    <% if (exercises.length === 0) { %>
+        <p>아직 등록된 운동 기록이 없습니다.</p>
+    <% } else { %>
+        <% exercises.forEach(exercise => { %>
+            <div class="record-card">
+
+                <div class="record-header">
+                    <h3><%= exercise.exercise_name %></h3>
+
+                    <div class="record-actions">
+                        <details>
+                            <summary>수정하기</summary>
+
+                            <form action="/exercises/edit/<%= exercise.id %>" method="POST">
+                                <input type="text" name="exercise_name"
+                                       value="<%= exercise.exercise_name %>" required>
+
+                                <input type="number" name="duration"
+                                       value="<%= exercise.duration %>" min="1" required>
+
+                                <input type="date" name="exercise_date"
+                                       value="<%= new Date(exercise.exercise_date).toISOString().split('T')[0] %>" required>
+
+                                <textarea name="memo"><%= exercise.memo || "" %></textarea>
+
+                                <button type="submit">변경 저장</button>
+                            </form>
+                        </details>
+
+                        <form action="/exercises/delete/<%= exercise.id %>" method="POST"
+                              onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                            <button type="submit" class="delete-button">삭제</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="record-info">
+                    <span>운동 시간</span>
+                    <strong><%= exercise.duration %>분</strong>
+                </div>
+
+                <div class="record-info">
+                    <span>운동 날짜</span>
+                    <strong><%= new Date(exercise.exercise_date).toLocaleDateString("ko-KR", { timeZone: "UTC" }) %></strong>
+                </div>
+
+                <% if (exercise.memo) { %>
+                    <p class="record-memo"><%= exercise.memo %></p>
+                <% } %>
+
+            </div>
+        <% }) %>
+    <% } %>
+</section>
+
+    </main>
+</body>
+<script>
+    window.exerciseRecords = <%- JSON.stringify(exercises.map(exercise => ({
+        name: exercise.exercise_name,
+        date: new Date(exercise.exercise_date).toISOString().slice(0, 10)
+    }))) %>;
+</script>
+<script src="/js/calendar.js"></script>
+</html>

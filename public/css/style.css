@@ -1,0 +1,251 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f7fb;
+    color: #263445;
+}
+
+header {
+    background: #2563eb;
+    color: white;
+    padding: 35px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+main {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+section {
+    background: white;
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+}
+
+h2 {
+    margin-bottom: 18px;
+    color: #1e40af;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+input,
+textarea {
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+    font-size: 15px;
+}
+
+textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+button {
+    padding: 13px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+.record {
+    border: 1px solid #e5e7eb;
+    padding: 15px;
+    margin-top: 12px;
+    border-radius: 8px;
+}
+
+.record h3 {
+    color: #2563eb;
+    margin-bottom: 8px;
+}
+
+.record p {
+    margin-top: 5px;
+}
+
+
+/* 운동 달력 */
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.calendar-header button {
+    padding: 10px 15px;
+    font-size: 14px;
+}
+
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    text-align: center;
+}
+
+.calendar-day {
+    font-weight: bold;
+    padding: 10px 0;
+    background: #eff6ff;
+    border-radius: 6px;
+}
+
+.calendar-date {
+    padding: 15px 5px;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+}
+
+
+/* 운동 통계 막대그래프 */
+.chart {
+    margin-top: 20px;
+}
+
+.chart-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.chart-item span {
+    width: 60px;
+    font-weight: bold;
+}
+
+.chart-bar {
+    flex: 1;
+    height: 20px;
+    background: #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.chart-fill {
+    height: 100%;
+    background: #2563eb;
+    border-radius: 10px;
+    transition: width 0.3s;
+}
+
+.chart-item strong {
+    width: 40px;
+    text-align: right;
+}
+
+.record-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.record-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+.record-header h3 {
+    color: #2563eb;
+    font-size: 20px;
+    margin: 0;
+}
+
+.record-actions {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.record-actions summary {
+    cursor: pointer;
+    color: #2563eb;
+    font-weight: bold;
+    padding: 9px 12px;
+    border: 1px solid #bfdbfe;
+    border-radius: 7px;
+    list-style: none;
+}
+
+.record-actions summary:hover {
+    background: #eff6ff;
+}
+
+.record-actions details form {
+    margin-top: 12px;
+    min-width: 250px;
+}
+
+.record-actions button {
+    font-size: 14px;
+    padding: 9px 12px;
+}
+
+.delete-button {
+    background: #ef4444;
+}
+
+.delete-button:hover {
+    background: #dc2626;
+}
+
+.record-info {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-top: 1px solid #f1f5f9;
+}
+
+.record-info span {
+    color: #64748b;
+}
+
+.record-info strong {
+    color: #334155;
+}
+
+.record-memo {
+    margin-top: 12px;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 7px;
+    color: #475569;
+}
+
+
